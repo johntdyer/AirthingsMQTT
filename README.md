@@ -1,13 +1,16 @@
 Fork comments and notes:
 ==========
 
-This is another fork from the main project, regarding this ESP32 MQTT client for Airthings Wave (gen1) BLE Radon sensors.
+This is another fork from the main project, regarding this ESP32 MQTT client for Airthings Wave (gen1) BLE Radon sensors:
 
-The objective is continuing to improve the project and give international users the possibility to get a precompiled binary file (ready to flash an ESP32) and report the Radon concentration in International System Units of Becquerel/cubic meter (Bq/m^3) instead of the non-SI unit pico Currie/litre (pCi/l).
+![AirthingsWave](https://www.airthings.com/hs-fs/hubfs/Website/Images/Wave-with-phone-ble.png?width=450&name=Wave-with-phone-ble.png)
+
+The objective is continuing to improve the project and give international users the possibility to get a precompiled binary file (ready to flash an ESP32) and report the Radon concentration in International System Units of Becquerel per cubic meter (Bq/m³) instead of the original non-SI unit pico Currie per litre (pCi/l).
 
 TO DO:
 - [ ] Precompiled binary, with WifiManager to configure a first flashed ESP32 through its configurable and own Wifi access point.
-- [X] Change units from pCi/l to Bq/m^3
+- [X] Minor documentation updates
+- [X] Change units from pCi/l to Bq/m³
 
 Airthing MQTT Bridge via an ESP32
 ==========
@@ -23,7 +26,7 @@ Airthing MQTT Bridge via an ESP32
 
 How to Use
 ----------
-* Set up your Airthings following the manufacter's instructions.
+* Set up your Airthings Wave following the manufacter's instructions. **Wait about 24 hours to get some data consistently**.
 * Install the [PubSubClient library](https://pubsubclient.knolleary.net/) on your `Arduino Sketch` instance.
 * Flash to any ESP32 board.  **NOTE: The Bluetooth library is HUGE, so in the Arduino IDE you might need to change "Tools" -> Partition Scheme" to something like "No OTA" to create enough space for the compiled sketch.**
 * Set your WiFi credentials and MQTT settings, through the temporary wifi AP created by the ESP32.
