@@ -36,7 +36,7 @@
 #include <WiFiManager.h>          //https://github.com/tzapu/WiFiManager/archive/development.zip
 #include <ArduinoJson.h>          //https://github.com/bblanchon/ArduinoJson
 
-#define HOSTNAME "radon_client"
+#define HOSTNAME "radon_esp32_airthings_wave_client"
 // WiFi credentials.
 // #define WIFI_SSID "YOUR SSID"
 // #define WIFI_PASS "YOUR PASSWORD"
@@ -57,7 +57,7 @@ char mqtt_client_name[100] = HOSTNAME;
 #define TOPIC_TEMPERATURE "stat/airthings/temperature"
 #define TOPIC_HUMIDITY "stat/airthings/humidity"
 
-// Unlikely you'll need to chnage any of the settings below.
+// Unlikely you'll need to change any of the settings below.
 
 // The time to take between readings.  One hour has worked pretty well for me.  
 // Since the device only gives us the 24hr average, more frequent readings 
@@ -77,7 +77,7 @@ char mqtt_client_name[100] = HOSTNAME;
 // Some useful constants.
 #define uS_TO_S_FACTOR 1000000
 #define SECONDS_TO_MILLIS 1000
-#define BECQUERELS_M2_TO_PICOCURIES_L 37.0
+// #define BECQUERELS_M3_TO_PICOCURIES_L 37.0
 #define DOT_PRINT_INTERVAL 50
 
 // The hard-coded uuid's airthings uses to advertise itself and its data.
@@ -128,13 +128,18 @@ bool getAndRecordReadings(BLEAddress pAddress) {
   float temperature = ((short)temperatureCharacteristic->readUInt16()) / 100.0;
   float humidity = humidityCharacteristic->readUInt16() / 100.0;
 
-  // The radon values are reported in terms of 
-  float radon = radon24Characteristic->readUInt16() / BECQUERELS_M2_TO_PICOCURIES_L;
-  float radonLongterm = radonLongTermCharacteristic->readUInt16() / BECQUERELS_M2_TO_PICOCURIES_L;
+  // The radon values are reported in terms of - previous version pCi/l radon values
+  // float radon = radon24Characteristic->readUInt16() / BECQUERELS_M3_TO_PICOCURIES_L;
+  // float radonLongterm = radonLongTermCharacteristic->readUInt16() / BECQUERELS_M3_TO_PICOCURIES_L;
+   
+  
+  // The radon values are reported in terms of - newer version Bq/m^3 radon values
+  float radon = radon24Characteristic->readUInt16();
+  float radonLongterm = radonLongTermCharacteristic->readUInt16(); 
   client->disconnect();
   
   Serial.printf("Temperature: %f\n", temperature);
-  Serial.printf("Humidity: %f\n", humidity);
+  Serial.printf("Relative Humidity: %f\n", humidity);
   Serial.printf("Radon 24hr average: %f\n", radon);
   Serial.printf("Radon Lifetime average: %f\n", radonLongterm);
 
