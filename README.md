@@ -24,16 +24,38 @@ Airthing MQTT Bridge via an ESP32
 How to Use
 ----------
 * Set up your Airthings following the manufacter's instructions.
-* Install the [PubSubClient library](https://pubsubclient.knolleary.net/).
-* Set your WiFi credentials in the sketch.
-* Set your MQTT server/credentials in the sketch.
-* Update the published topics in the sketch, if desired.
-* Flash to any ESP32 board.  NOTE: The Bluetooth library is HUGE, so in the Arduino IDE you might need to change "Tools" -> Partition Scheme" to something like "No OTA" to create enough space for the compiled sketch.
-* Watch the Serial output to make sure it works.
+* Install the [PubSubClient library](https://pubsubclient.knolleary.net/) on your `Arduino Sketch` instance.
+* Flash to any ESP32 board.  **NOTE: The Bluetooth library is HUGE, so in the Arduino IDE you might need to change "Tools" -> Partition Scheme" to something like "No OTA" to create enough space for the compiled sketch.**
+* Set your WiFi credentials and MQTT settings, through the temporary wifi AP created by the ESP32.
+* Watch the Serial output to make sure it works. **It may take an hour to report the first data!**
+* Configure your Home Assistant instance with these sensors (inside your `configuration.yaml` file):
+```yaml
+sensor:
+  - platform: mqtt
+    name: "Radon 24h"
+    state_topic: "stat/airthings/radon24hour"
+    icon: 'mdi:radioactive'
+    unit_of_measurement: 'Bq/m³'
+  - platform: mqtt
+    name: "Radon Lifetime"
+    state_topic: "stat/airthings/radonLifetime"
+    icon: 'mdi:radioactive'
+    unit_of_measurement: 'Bq/m³'
+  - platform: mqtt
+    name: "Airthings Relative Humidity"
+    state_topic: "stat/airthings/humidity"
+    icon: 'mdi:water-percent'
+    unit_of_measurement: '%'
+  - platform: mqtt
+    name: "Airthings Temperature"
+    state_topic: "stat/airthings/temperature"
+    icon: 'mdi:home-thermometer'
+    unit_of_measurement: 'ºC'
+```
 
 Usage Details
 ---------------------
-* Regading Radon concentration, the Airthings Wave (gen1) only reports the 24 hour and lifetime averages over Bluetooth.
+* The Airthings only reports the `24 hour` and `lifetime` average radon concentrations over Bluetooth.
 * The library runs once an hour to take a reading and deep sleeps in between, so feasibly this could run on a battery for a very long time.
 * The library will attempt to find any airthings device to read from, picking the first it finds.  The Airthings BLE API is unauthenticated so no device configuration or pairing is necessary on the Airthings.
 * The library will not interfere with your Airthings' normal upload to a phone or the cloud.
