@@ -1,11 +1,23 @@
+Fork comments and notes:
+==========
+
+This is another fork from the main project, regarding this ESP32 MQTT client for Airthings Wave (gen1) BLE Radon sensors.
+
+The objective is continuing to improve the project and give international users the possibility to get a precompiled binary file (ready to flash an ESP32) and report the Radon concentration in International System Units of Becquerel/cubic meter (Bq/m^3) instead of the non-SI unit pico Currie/litre (pCi/l).
+
+TO DO:
+- [ ] Precompiled binary, with WifiManager to configure a first flashed ESP32 through its configurable and own Wifi access point.
+- [X] Change units from pCi/l to Bq/m^3
+
 Airthing MQTT Bridge via an ESP32
 ==========
 
-* Author: Stephen Beechen 
-* Copyright (C) 2019 Stephen Beechen.
+* Original Author: Stephen Beechen
+* Forked from: debsahu/AirthingsMQTT
+* Copyright (C) 2019 Stephen Beechen
 * Released under the MIT license.
 
- An ESP32 arduino sketch that searches for a compatible Airthings device and publishes the radon level, temperature, and humidity to an MQTT server.
+ An ESP32 arduino sketch that searches for a compatible Airthings device and publishes the radon level, temperature, and humidity to an MQTT Broker, such as Mosquitto and others.
 
  The sketch was created with the intention to allow Airthings devices to cheaply integrate with Home Assistant.
 
@@ -21,12 +33,12 @@ How to Use
 
 Usage Details
 ---------------------
-* The Airthings only reports the 24 hour and lifetime average radon concentrations over Bluetooth.
+* Regading Radon concentration, the Airthings Wave (gen1) only reports the 24 hour and lifetime averages over Bluetooth.
 * The library runs once an hour to take a reading and deep sleeps in between, so feasibly this could run on a battery for a very long time.
 * The library will attempt to find any airthings device to read from, picking the first it finds.  The Airthings BLE API is unauthenticated so no device configuration or pairing is necessary on the Airthings.
 * The library will not interfere with your Airthings' normal upload to a phone or the cloud.
 * If it fails to read, it will attempt again after 30 seconds.
-* I only have an Airthings Wave to test this with, though presumably it would also work with the Wave Plus.
+* Tested only with an Airthings Wave (gen1), firmware `BLE:COR9001B.1703301, MSP 2020-6-22`
 * The ESP32's bluetooth stack is a little unstable IMHO so expect this to hang for a few minutes, restart prematurely, and report errors often.
 
 
